@@ -96,6 +96,8 @@ export async function respondFromLassie(req, res, { cidObj, format }) {
         "User-Agent": req.headers["user-agent"],
       },
     };
+    debug(`call ${lassieUrl}, ${fetchOpts.headers}`);
+    
     res.startTime("shim_lassie_headers");
     lassieRes = await fetch(lassieUrl, fetchOpts);
     res.startTime("shim_lassie_body");
@@ -165,6 +167,7 @@ export async function respondFromLassie(req, res, { cidObj, format }) {
 
 function createLassieURL(req, isRawFormat) {
   const lassieUrl = new URL(LASSIE_ORIGIN + toUtf8(req.path));
+  debug(`${req.query}`);
   for (const [key, val] of Object.entries(req.query)) {
     if (key === "filename") {
       continue;
